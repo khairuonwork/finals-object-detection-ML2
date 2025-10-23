@@ -289,7 +289,7 @@ export default function Home() {
                     href="/Yolo-Detection"
                     className="hover:text-primary-foreground transition-colors"
                   >
-                    Detection
+                    YOLO Detection
                   </Link>
                 </li>
                 <li>
@@ -297,7 +297,7 @@ export default function Home() {
                     href="/About-Model"
                     className="hover:text-primary-foreground transition-colors"
                   >
-                    About
+                    About Model
                   </Link>
                 </li>
               </ul>
