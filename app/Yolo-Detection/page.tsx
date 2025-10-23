@@ -18,9 +18,12 @@ export default function YoloDetection() {
   const streamRef = useRef<MediaStream | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  //SocketURL nya
+  const socketURL = process.env.NEXT_PUBLIC_NGROKWEBSOCKET_URL;
+
   // Initialize WebSocket
   useEffect(() => {
-    socketRef.current = io("http://localhost:5002", {
+    socketRef.current = io(socketURL, {
       transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionDelay: 1000,
@@ -28,24 +31,24 @@ export default function YoloDetection() {
     });
 
     socketRef.current.on("connect", () => {
-      console.log("✅ Connected to WebSocket server");
+      console.log("Connected to WebSocket server");
       setStatus("Connected to server. Ready to start camera.");
       setIsConnected(true);
     });
 
     socketRef.current.on("processed_frame", (data: string) => {
-      console.log("📥 Received processed frame from backend");
+      console.log("Received processed frame from backend");
       setProcessedImage(data);
     });
 
     socketRef.current.on("disconnect", () => {
-      console.log("❌ Disconnected from server");
+      console.log("Disconnected from server");
       setStatus("Disconnected from server.");
       setIsConnected(false);
     });
 
     socketRef.current.on("connect_error", (err: Error) => {
-      console.error("❌ Connection error:", err.message);
+      console.error("Connection error:", err.message);
       setStatus(
         "Failed to connect to backend. Please check if server is running."
       );
@@ -71,7 +74,7 @@ export default function YoloDetection() {
         },
       });
 
-      console.log("✅ Camera access granted!");
+      console.log("Camera access granted!");
       streamRef.current = stream;
 
       if (videoRef.current) {
@@ -84,7 +87,7 @@ export default function YoloDetection() {
         };
 
         videoRef.current.onplay = () => {
-          console.log("▶️ Video playing");
+          console.log("Video playing");
           setStatus("Camera active. Streaming to YOLO model...");
           setIsStreaming(true);
         };
